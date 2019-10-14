@@ -5,7 +5,7 @@ const router = express.Router(); //After calling this, we no longer use app.post
 //@desc     Get logged in user
 //@access   private because getting a logged in user.
 
-router.get('/', (req, res) => {
+router.get('/', (req, res) => { //The / acts a default because from server, it will be redirected here
     res.send('Get logged in user')
 });
 
