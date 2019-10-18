@@ -84,21 +84,24 @@ router.put('/:id', auth, async (req, res) => {
 //@route    DELETE api/contacts/:id This is more specific in regarsd to the contact that we want to update. 
 //@desc     Deleting contacts
 //@access   Private because you have to be logged in. 
-router.delete('/:id', auth, async (req, res) => {
 
+router.delete('/:id', auth, async (req, res) => {
     try {
-        let contact = await Contact.findById(req.body.id);
-        if (!contact) res.status(404).json({ msg: "Contact not found" });
-        if (contact.user !== req.user.id) res.status(401).json({ msg: "Unauthorized" });
+        let contact = await Contact.findById(req.params.id); //This is us trying to access the /:id parameter 
+        if (!contact) return res.status(404).json({ msg: "Not Found" });
+        //Make sure the user owns the contact
+        if (contact.user.toString() !== req.user.id) {
+            return res.status(401).json({ msg: 'Unauthorized' })
+        }
 
         await Contact.findByIdAndRemove(req.params.id);
 
-        json({ msg: "contact deleted" });
+        res.json({msg: "Contact has been removed"});
+
     } catch (error) {
         console.error(error.message);
         res.status(500).json({ msg: "Server Error." });
     }
-
 });
 
 
