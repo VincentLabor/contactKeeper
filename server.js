@@ -16,6 +16,7 @@ app.get('/', (req,res) => {
 //Defining routes from routes folder
 //All backend routes to start with /api/
 //When it calls /api/etc, it will look for a filepath.
+
 app.use('/api/users', require('./routes/users'));
 app.use('/api/contacts', require('./routes/contacts'));
 app.use('/api/auth', require('./routes/auth'));

@@ -4,20 +4,27 @@ const { check, validationResult } = require("express-validator");
 const jwt = require('jsonwebtoken');
 const bcrypt = require("bcryptjs");
 const config = require("config");
+const auth = require('../middleware/auth');
 const User = require('../models/User');
 
-//@route    POST  api/auth
+//@route    GET api/auth
 //@desc     Get logged in user
 //@access   private because getting a logged in user.
 
-router.get('/', (req, res) => { //The / acts a default because from server, it will be redirected here
-    res.send('Get logged in user')
+router.get('/', auth , async (req, res) => { //The / acts a default because from server, it will be redirected here. If the user logged in, the user.id will be within the req. 
+    try {
+        const user = await User.findById(req.user.id).select('-password'); //We search through the file with the schemas to find the matching users. Getting the user through the database
+        res.json(user);
+    } catch (error) {
+        console.error(error.message);
+        res.status(500).send('Server Error');
+    }
 });
 
 
 //@route    POST  api/auth
 //@desc     Auth user and get token
-//@access   private because getting a logged in user.
+//@access   Public .
 
 router.post('/',
     [
