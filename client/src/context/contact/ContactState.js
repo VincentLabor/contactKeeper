@@ -44,8 +44,16 @@ const ContactState = props => {
     //Below this is the actions 
 
     //Add contact
+    const addContact = contact => {
+        contact.id = uuid.v4();
+        dispatch({ type: ADD_CONTACT, payload: contact });
+    }
 
     //Delete contact
+    const deleteContact = id => {
+        dispatch({ type: DELETE_CONTACT, payload: id })
+    }
+
 
     //Set Current
 
@@ -61,6 +69,8 @@ const ContactState = props => {
         <contactContext.Provider value={
             {
                 contacts: state.contacts,
+                addContact,
+                deleteContact
             }
         }> {/* Value is any state/actions that we wish to access from other components*/}
             {props.children}
