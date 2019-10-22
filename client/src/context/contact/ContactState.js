@@ -37,7 +37,8 @@ const ContactState = props => {
                 phone: '333-333-3333',
                 type: 'professional'
             }
-        ]
+        ],
+        current: null
     };
 
     const [state, dispatch] = useReducer(contactReducer, initialState); //State allows us to access anything in state and dispatch allwos us to dispatch things to our reducer. 
@@ -56,10 +57,19 @@ const ContactState = props => {
 
 
     //Set Current
+    const setCurrent = contact => {
+        dispatch({ type: SET_CURRENT, payload: contact })
+    }
 
     //Clear Current
+    const clearCurrent = () => {
+        dispatch({ type: CLEAR_CURRENT })
+    }
 
     //Update contact
+    const updateContact = contact => {
+        dispatch({ type: UPDATE_CONTACT, payload: contact })
+    }
 
     //Filter contact
 
@@ -69,8 +79,12 @@ const ContactState = props => {
         <contactContext.Provider value={
             {
                 contacts: state.contacts,
+                current: state.current,
                 addContact,
-                deleteContact
+                deleteContact,
+                setCurrent,
+                clearCurrent,
+                updateContact
             }
         }> {/* Value is any state/actions that we wish to access from other components*/}
             {props.children}
