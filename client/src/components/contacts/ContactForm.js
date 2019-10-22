@@ -16,7 +16,7 @@ const ContactForm = () => {
                 type: 'personal'
             });
         }
-    }, [contactContext, current]);
+    }, [current, contactContext]); //The bracket of contactContext/current basically says useEffect will be applied if contactContext/current is changed. AKA dependancies
 
     const [contact, setContact] = useState({
         name: '',
