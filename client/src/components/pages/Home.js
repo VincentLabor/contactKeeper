@@ -14,7 +14,6 @@ const Home = () => {
                 <ContactFilter />
                 <Contacts />
             </div>
-
         </div>
     )
 }

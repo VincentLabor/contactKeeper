@@ -39,7 +39,7 @@ const ContactState = props => {
             }
         ],
         current: null,
-        filtered: null
+        filtered: null //This is to store an array of filtered contacts.
     };
 
     const [state, dispatch] = useReducer(contactReducer, initialState); //State allows us to access anything in state and dispatch allwos us to dispatch things to our reducer. 
@@ -73,7 +73,7 @@ const ContactState = props => {
     }
 
     //Filter contact
-    const filterContacts = (text) => {
+    const filterContacts = text => {
         dispatch({ type: FILTER_CONTACTS, payload: text });
     }
 

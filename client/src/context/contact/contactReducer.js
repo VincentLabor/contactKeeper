@@ -41,7 +41,7 @@ export default (state, action) => {
             return {
                 ...state,
                 filtered: state.contacts.filter((contact) => {
-                    const regex = new RegExp(`${action.payload}, 'gi'`) //gi for global insensitive. Will match regardless of capitalization. 
+                    const regex = new RegExp(`${action.payload}`, 'gi') //gi for global insensitive. Will match regardless of capitalization. 
                     return contact.name.match(regex) || contact.email.match(regex);
                 })
             }
