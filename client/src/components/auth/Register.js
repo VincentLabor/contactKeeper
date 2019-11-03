@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import AuthState from '../../context/auth/AuthState';
+
 import AlertContext from '../../context/alert/alertContext';
 import AuthContext from '../../context/auth/authContext';
 
-const Register = () => {
+const Register = props => {
 
     const alertContext = useContext(AlertContext);
     const authContext = useContext(AuthContext);
@@ -14,19 +14,24 @@ const Register = () => {
         password: '',
         password2: ''
     })
-    
+
 
 
     const { setAlert } = alertContext;
     const { name, email, password, password2 } = user
-    const { register, error, clearErrors } = authContext;
+    const { register, error, clearErrors, isAuthenticated } = authContext;
 
     useEffect(() => {
+        if (isAuthenticated) {
+            props.history.push('/')
+        }
+
         if (error === 'User already exists') {
             setAlert(error, 'danger');
             clearErrors();
         }
-    }, [error]) //We want to run this when the error state changes, so we add error here as a dependancy. 
+        // eslint-disable-next-line
+    }, [error, isAuthenticated, props.history]) //We want to run this when the error state changes, so we add error here as a dependancy. 
 
     const onChange = e => {
         setUser({ ...user, [e.target.name]: e.target.value }) //First value is the current value. Basically everytime we type, this will enter the correct state.
