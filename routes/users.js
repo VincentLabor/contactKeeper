@@ -25,10 +25,10 @@ router.post('/',
 
         const { name, email, password } = req.body; //req.body should now have the name, email, and password.
 
-        try {
+        try { 
             let user = await User.findOne({ email }); //findOne is a mongoose command. the parameter is actually email:email but ES6 says we can just put it once. 
             if (user) {
-                res.status(400).json({ msg: "user already exists" })
+                res.status(400).json({ msg: "User already exists" })
             }
 
             user = new User({

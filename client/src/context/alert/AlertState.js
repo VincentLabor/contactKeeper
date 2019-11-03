@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useReducer} from 'react';
 import AlertContext from './alertContext';
 import uuid from 'uuid';
 import alertReducer from './alertReducer';
@@ -15,15 +15,16 @@ const AlertState = props => {
         const id = uuid.v4();
         dispatch({
             type: SET_ALERT,
-            payload: { id, msg, type }
+            payload: { msg, type, id}
         })
-        setTimeout(() => { dispatch({ type: REMOVE_ALERT, payload: id }) }, timeout); //There is a payload with an id because we want to which one to delete.
+        setTimeout(() => { dispatch({ type: REMOVE_ALERT, payload: id }) }, timeout); //There is a payload with an id because we want to which alert to delete.
     }
 
-    //REMOVE ALERT
-
     return (
-        <AlertContext.Provider value="">
+        <AlertContext.Provider value={{
+            alerts: state,
+            setAlert
+        }}>
             {props.children}
         </AlertContext.Provider>
     )
