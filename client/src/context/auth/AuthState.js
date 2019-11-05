@@ -12,7 +12,8 @@ import {
     LOGIN_SUCCESS,
     LOGIN_FAIL,
     LOGOUT,
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
+    SEARCH_FAIL
 } from '../types';
 
 const AuthState = props => {
@@ -73,8 +74,30 @@ const AuthState = props => {
         }
     }
     //Login User
-    const loginUser = () => {
+    const loginUser = async formData => { //formdata is the data used to register the user
+        //Since we are making a post request and sending some data, we need the content type header
 
+        const config = { //This is from axios
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }
+
+        try {
+            const res = await axios.post('/api/auth', formData, config); //We dont have to put http://localhost:5000 because of the proxy value that we made
+            dispatch({
+                type: LOGIN_SUCCESS,
+                payload: res.data //Will be the token
+            });
+
+            loadUser();
+
+        } catch (err) { //In the case of failing registration,
+            dispatch({
+                type: LOGIN_FAIL,
+                payload: err.response.data.msg
+            })
+        }
     }
 
     //Logout
