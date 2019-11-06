@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
