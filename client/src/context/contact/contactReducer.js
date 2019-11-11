@@ -24,13 +24,13 @@ export default (state, action) => {
         case ADD_CONTACT:
             return {
                 ...state,
-                contacts: [...state.contacts, action.payload],
+                contacts: [ action.payload,...state.contacts], //If we move action.payload to the front, the contacts will be sorted by added date
                 loading: false //We have the original in the state and we add in the payload
             }
         case DELETE_CONTACT:
             return {
                 ...state,
-                contacts: state.contacts.filter(contact => contact.id !== action.payload), //This will return all contacts in the payload that are not the current id. 
+                contacts: state.contacts.filter(contact => contact._id !== action.payload), //This will return all contacts in the payload that are not the current id. 
                 loading: false
             };
         case CLEAR_CONTACTS:

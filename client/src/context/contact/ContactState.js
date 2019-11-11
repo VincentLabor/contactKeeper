@@ -73,9 +73,9 @@ const ContactState = props => {
     const deleteContact = async id => {
 
         try {
-            await axios.delete(`/api/contacts${id}`) //Removed variable because we do not need to store anything here. 
-            dispatch({ type: DELETE_CONTACT, payload: id })
+            await axios.delete(`/api/contacts/${id}`) //Removed variable because we do not need to store anything here. 
 
+            dispatch({ type: DELETE_CONTACT, payload: id })
         } catch (error) {
             dispatch({
                 type: CONTACT_ERROR,
