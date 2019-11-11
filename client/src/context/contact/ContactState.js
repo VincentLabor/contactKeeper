@@ -2,6 +2,7 @@ import React, { useReducer } from 'react';
 import axios from 'axios';
 import contactReducer from './contactReducer';
 import {
+    GET_CONTACTS,
     ADD_CONTACT,
     DELETE_CONTACT,
     SET_CURRENT,
@@ -9,20 +10,38 @@ import {
     UPDATE_CONTACT,
     FILTER_CONTACTS,
     CLEAR_FILTER,
+    CLEAR_CONTACTS,
     CONTACT_ERROR
 } from '../types';
 import contactContext from './contactContext';
 
 const ContactState = props => {
     const initialState = {
-        contacts: [],
+        contacts: null,
         current: null,
         filtered: null, //This is to store an array of filtered contacts.
-        error: null
+        error: null,
+
     };
 
     const [state, dispatch] = useReducer(contactReducer, initialState); //State allows us to access anything in state and dispatch allwos us to dispatch things to our reducer. 
     //Below this is the actions 
+
+    //GET contacts
+    const getContacts = async () => {
+        try {
+            const res = await axios.get('/api/contacts') //We're sending in the contact and the config. 
+            dispatch({
+                type: GET_CONTACTS,
+                payload: res.data
+            });
+        } catch (error) {
+            dispatch({
+                type: CONTACT_ERROR,
+                payload: error.response.msg
+            })
+        }
+    }
 
     //Add contact
     const addContact = async (contact) => {
@@ -44,9 +63,29 @@ const ContactState = props => {
         }
     }
 
+    const clearContacts = () => {
+        dispatch({
+            type: CLEAR_CONTACTS
+        })
+    }
+
     //Delete contact
-    const deleteContact = id => {
-        dispatch({ type: DELETE_CONTACT, payload: id })
+    const deleteContact = async id => {
+
+        try {
+            await axios.delete(`/api/contacts${id}`) //Removed variable because we do not need to store anything here. 
+            dispatch({ type: DELETE_CONTACT, payload: id })
+
+        } catch (error) {
+            dispatch({
+                type: CONTACT_ERROR,
+                payload: error.response.msg
+            })
+        }
+
+
+
+
     }
 
 
@@ -84,11 +123,13 @@ const ContactState = props => {
                 error: state.error,
                 addContact,
                 deleteContact,
+                clearContacts,
                 setCurrent,
                 clearCurrent,
                 updateContact,
                 filterContacts,
-                clearFilter
+                clearFilter,
+                getContacts
             }
         }> {/* Value is any state/actions that we wish to access from other components*/}
             {props.children}
